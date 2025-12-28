@@ -14,6 +14,7 @@ import PasswordInput from '@/components/password-input'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Link } from 'react-router'
+import { Checkbox } from '@/components/ui/checkbox'
 
 const Signup = () => {
   return (
@@ -25,14 +26,30 @@ const Signup = () => {
             Insira seus dados abaixo.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           <Input placeholder="Digite seu nome" />
           <Input placeholder="Digite seu sobrenome" />
           <Input placeholder="Digite seu email" />
           <PasswordInput />
           <PasswordInput placeholder="Digite sua senha novamente" />
         </CardContent>
-        <CardFooter>
+
+        <div className="items-top flex gap-3 px-7 py-1">
+          <Checkbox id="terms-2" defaultChecked />
+          <div className="grid gap-2">
+            <label
+              htmlFor="terms-2"
+              className="text-sm text-muted-foreground opacity-75"
+            >
+              Ao clicar em “Criar conta”, você aceita
+              <a href="#" className="p-2 text-primary-foreground underline">
+                nosso termo de uso e política de privacidade
+              </a>
+            </label>
+          </div>
+        </div>
+
+        <CardFooter className="pt-5">
           <Button className="w-full text-lg">Criar conta</Button>
         </CardFooter>
         <div className="flex items-center justify-center text-base">
