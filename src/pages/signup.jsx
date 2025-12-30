@@ -15,6 +15,36 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Link } from 'react-router'
 import { Checkbox } from '@/components/ui/checkbox'
+import { z } from 'zod'
+
+const signupSchema = z.object({
+  firstName: z.string().trim().min(1, {
+    message: 'O nome é obrigátorio.',
+  }),
+  lastName: z.string().trim().min(1, {
+    message: 'O sobrenome é obrigátorio.',
+  }),
+  email: z
+    .string()
+    .email({
+      message: 'O e-mail é inválido.',
+    })
+    .trim()
+    .min(1, {
+      message: 'O e-mail é obrigátorio.',
+    }),
+
+  password: z.string().trim().min(6, {
+    message: 'A senha deve ter no mínimo 6 caracteres.',
+  }),
+  passwordConfirmation: z.string().trim().min(6, {
+    message: 'A confirmação da senha e obrigátorio.',
+  }),
+
+  terms: z.boolean().refine((value) => value === true, {
+    message: 'Você precisa aceitar os termos.',
+  }),
+})
 
 const Signup = () => {
   return (
