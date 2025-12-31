@@ -106,7 +106,7 @@ const Signup = () => {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome</FormLabel>
+                    <FormLabel>Sobrenome</FormLabel>
                     <FormControl>
                       <Input placeholder="Digite seu sobrenome" {...field} />
                     </FormControl>
@@ -120,7 +120,7 @@ const Signup = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Nome</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input placeholder="Digite seu email" {...field} />
                     </FormControl>
