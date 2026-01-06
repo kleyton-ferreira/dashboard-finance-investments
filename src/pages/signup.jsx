@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
   Card,
   CardContent,
@@ -29,7 +29,7 @@ import { Link } from 'react-router'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { z } from 'zod'
-import { AuthContext } from '@/context/auth'
+import { useAuthContext } from '@/context/auth'
 
 const signupSchema = z
   .object({
@@ -66,7 +66,7 @@ const signupSchema = z
   })
 
 const Signup = () => {
-  const { user, signup } = useContext(AuthContext)
+  const { user, signup } = useAuthContext()
 
   const methods = useForm({
     resolver: zodResolver(signupSchema),

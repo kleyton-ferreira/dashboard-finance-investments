@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import PasswordInput from '@/components/password-input'
 import { Button } from '@/components/ui/button'
@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Link } from 'react-router'
-import { AuthContext } from '@/context/auth'
+import { useAuthContext } from '@/context/auth'
 
 const loginSchema = z.object({
   email: z
@@ -43,7 +43,7 @@ const loginSchema = z.object({
 })
 
 const LoginPage = () => {
-  const { user, login } = useContext(AuthContext)
+  const { user, login } = useAuthContext()
 
   const methods = useForm({
     resolver: zodResolver(loginSchema),
