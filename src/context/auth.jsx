@@ -8,6 +8,7 @@ export const AuthContext = createContext({
   isInicialized: true,
   login: () => {},
   signup: () => {},
+  signOut: () => {},
 })
 
 // INICIO DE REFATORAÇOES FEITAS AQUI!
@@ -59,7 +60,7 @@ export const AuthContextProvider = ({ children }) => {
     },
   })
 
-  // ESSE useEffcts ME DEIXA LOGADO
+  // ESSE useEffcts ME DEIXA LOGADO ASSIM QUE O COMPONENTE FOR MONTADO!
   useEffect(() => {
     const init = async () => {
       try {
@@ -112,6 +113,11 @@ export const AuthContextProvider = ({ children }) => {
     })
   }
 
+  const signOut = () => {
+    setUser(null)
+    removeTokens()
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -119,6 +125,7 @@ export const AuthContextProvider = ({ children }) => {
         login,
         signup,
         isInicialized,
+        signOut,
       }}
     >
       {children}
