@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 
 import PasswordInput from '@/components/password-input'
 import { Button } from '@/components/ui/button'
@@ -25,9 +25,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Link } from 'react-router'
-import { useMutation } from '@tanstack/react-query'
-import { api } from '@/lib/axios'
-import { toast } from 'sonner'
 import { AuthContext } from '@/context/auth'
 
 const loginSchema = z.object({
@@ -46,19 +43,7 @@ const loginSchema = z.object({
 })
 
 const LoginPage = () => {
-  const { user: userText } = useContext(AuthContext)
-
-  const [user, setUser] = useState(null)
-  const loginMutation = useMutation({
-    mutationKey: ['login'],
-    mutationFn: async (variables) => {
-      const response = await api.post('/users/login', {
-        email: variables.email,
-        password: variables.password,
-      })
-      return response.data
-    },
-  })
+  const { user, login } = useContext(AuthContext)
 
   const methods = useForm({
     resolver: zodResolver(loginSchema),
@@ -68,43 +53,7 @@ const LoginPage = () => {
     },
   })
 
-  // ESSE useEffcts ME DEIXA LOGADO
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
-        if (!accessToken && !refreshToken) return
-        const response = await api.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        setUser(response.data)
-      } catch (error) {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        console.error(error)
-      }
-    }
-    init()
-  }, [])
-
-  const handleSubmit = (data) => {
-    loginMutation.mutate(data, {
-      onSuccess: (logedUser) => {
-        const accessToken = logedUser.tokens.accessToken
-        const refreshToken = logedUser.tokens.refreshToken
-        setUser(logedUser)
-        localStorage.setItem('accessToken', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
-        toast.success('Login realizado com sucesso!')
-      },
-      onError: (error) => {
-        console.error(error)
-      },
-    })
-  }
+  const handleSubmit = (data) => login(data)
 
   if (user) {
     return <h1>Óla {user.first_name}</h1>
@@ -112,7 +61,6 @@ const LoginPage = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
-      <h1> {userText} </h1>
       <Form {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Card className="w-[500px]">
