@@ -1,4 +1,4 @@
-import { api } from '@/lib/axios'
+import { protectedApi, publicApi } from '@/lib/axios'
 import { useMutation } from '@tanstack/react-query'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -39,7 +39,7 @@ export const AuthContextProvider = ({ children }) => {
   const signupMutation = useMutation({
     mutationKey: ['signup'],
     mutationFn: async (variales) => {
-      const response = await api.post('/users', {
+      const response = await publicApi.post('/users', {
         first_name: variales.firstName,
         last_name: variales.lastName,
         email: variales.email,
@@ -52,7 +52,7 @@ export const AuthContextProvider = ({ children }) => {
   const loginMutation = useMutation({
     mutationKey: ['login'],
     mutationFn: async (variables) => {
-      const response = await api.post('/users/login', {
+      const response = await publicApi.post('/users/login', {
         email: variables.email,
         password: variables.password,
       })
@@ -70,7 +70,7 @@ export const AuthContextProvider = ({ children }) => {
           LOCAL_STORAGE_REFRESH_TOKEN_KEY
         )
         if (!accessToken && !refreshToken) return
-        const response = await api.get('/users/me')
+        const response = await protectedApi.get('/users/me')
         setUser(response.data)
       } catch (error) {
         setUser(null)
