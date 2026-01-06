@@ -25,7 +25,7 @@ import PasswordInput from '@/components/password-input'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Link } from 'react-router'
+import { Link, Navigate } from 'react-router'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { z } from 'zod'
@@ -66,7 +66,7 @@ const signupSchema = z
   })
 
 const Signup = () => {
-  const { user, signup } = useAuthContext()
+  const { user, signup, isInicialized } = useAuthContext()
 
   const methods = useForm({
     resolver: zodResolver(signupSchema),
@@ -82,8 +82,10 @@ const Signup = () => {
 
   const handleSubmit = (data) => signup(data)
 
+  if (isInicialized) return null
+
   if (user) {
-    return <h1> Óla, {user.first_name}!</h1>
+    return <Navigate to="/" />
   }
 
   return (
