@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import PasswordInput from '@/components/password-input'
 import { Button } from '@/components/ui/button'
@@ -28,6 +28,7 @@ import { Link } from 'react-router'
 import { useMutation } from '@tanstack/react-query'
 import { api } from '@/lib/axios'
 import { toast } from 'sonner'
+import { AuthContext } from '@/context/auth'
 
 const loginSchema = z.object({
   email: z
@@ -45,6 +46,8 @@ const loginSchema = z.object({
 })
 
 const LoginPage = () => {
+  const { user: userText } = useContext(AuthContext)
+
   const [user, setUser] = useState(null)
   const loginMutation = useMutation({
     mutationKey: ['login'],
@@ -109,6 +112,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex h-screen w-screen flex-col items-center justify-center gap-3">
+      <h1> {userText} </h1>
       <Form {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Card className="w-[500px]">

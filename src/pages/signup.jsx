@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
   Card,
   CardContent,
@@ -29,9 +29,7 @@ import { Link } from 'react-router'
 import { Checkbox } from '@/components/ui/checkbox'
 
 import { z } from 'zod'
-import { useMutation } from '@tanstack/react-query'
-import { api } from '@/lib/axios'
-import { toast } from 'sonner'
+import { AuthContext } from '@/context/auth'
 
 const signupSchema = z
   .object({
@@ -68,20 +66,7 @@ const signupSchema = z
   })
 
 const Signup = () => {
-  const [user, setUser] = useState(null)
-
-  const signupMutation = useMutation({
-    mutationKey: ['signup'],
-    mutationFn: async (variales) => {
-      const response = await api.post('/users', {
-        first_name: variales.firstName,
-        last_name: variales.lastName,
-        email: variales.email,
-        password: variales.password,
-      })
-      return response.data
-    },
-  })
+  const { user, signup } = useContext(AuthContext)
 
   const methods = useForm({
     resolver: zodResolver(signupSchema),
@@ -95,42 +80,7 @@ const Signup = () => {
     },
   })
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken')
-        const refreshToken = localStorage.getItem('refreshToken')
-        if (!accessToken && !refreshToken) return
-        const response = await api.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-        setUser(response.data)
-      } catch (error) {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('refreshToken')
-        console.error(error)
-      }
-    }
-    init()
-  }, [])
-
-  const handleSubmit = (data) => {
-    signupMutation.mutate(data, {
-      onSuccess: (createUser) => {
-        const accessToken = createUser.tokens.accessToken
-        const refreshToken = createUser.tokens.refreshToken
-        setUser(createUser)
-        localStorage.setItem('accessToken', accessToken)
-        localStorage.setItem('refreshToken', refreshToken)
-        toast.success('Conta criada ccom sucesso!')
-      },
-      onError: () => {
-        toast.error('Erro ao criar conta. tente novamente!')
-      },
-    })
-  }
+  const handleSubmit = (data) => signup(data)
 
   if (user) {
     return <h1> Óla, {user.first_name}!</h1>
