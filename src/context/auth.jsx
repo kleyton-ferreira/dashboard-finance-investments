@@ -6,6 +6,7 @@ import {
   LOCAL_STORAGE_ACESS_TOKEN_KEY,
   LOCAL_STORAGE_REFRESH_TOKEN_KEY,
 } from '@/constants/local-storage'
+import { UserService } from '@/services/user'
 
 export const AuthContext = createContext({
   user: null,
@@ -38,14 +39,9 @@ export const AuthContextProvider = ({ children }) => {
 
   const signupMutation = useMutation({
     mutationKey: ['signup'],
-    mutationFn: async (variales) => {
-      const response = await publicApi.post('/users', {
-        first_name: variales.firstName,
-        last_name: variales.lastName,
-        email: variales.email,
-        password: variales.password,
-      })
-      return response.data
+    mutationFn: async (variables) => {
+      const response = await UserService.signup(variables)
+      return response
     },
   })
 
