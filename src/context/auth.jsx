@@ -1,4 +1,3 @@
-import { protectedApi, publicApi } from '@/lib/axios'
 import { useMutation } from '@tanstack/react-query'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -48,13 +47,12 @@ export const AuthContextProvider = ({ children }) => {
   const loginMutation = useMutation({
     mutationKey: ['login'],
     mutationFn: async (variables) => {
-      const response = await publicApi.post('/users/login', {
-        email: variables.email,
-        password: variables.password,
-      })
-      return response.data
+      const response = await UserService.login(variables)
+      return response
     },
   })
+
+  console.log({ user })
 
   // ESSE useEffcts ME DEIXA LOGADO ASSIM QUE O COMPONENTE FOR MONTADO!
   useEffect(() => {
@@ -66,8 +64,8 @@ export const AuthContextProvider = ({ children }) => {
           LOCAL_STORAGE_REFRESH_TOKEN_KEY
         )
         if (!accessToken && !refreshToken) return
-        const response = await protectedApi.get('/users/me')
-        setUser(response.data)
+        const response = await UserService.me()
+        setUser(response)
       } catch (error) {
         setUser(null)
         console.error(error)
