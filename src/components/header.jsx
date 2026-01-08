@@ -20,8 +20,9 @@ const Header = () => {
     <>
       <Card>
         <CardContent className="flex items-center justify-between px-8 py-4">
-          <div>
+          <div className="flex items-center gap-12">
             <img src={Logo} alt="FinTrack" />
+            <h2 className="text-xs text-primary">Dashboard</h2>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger>
