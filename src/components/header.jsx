@@ -25,7 +25,7 @@ const Header = () => {
             <h2 className="text-xs text-primary">Dashboard</h2>
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button variant="outline" className="p-6">
                 <div>
                   <Avatar className="h-8 w-8">
