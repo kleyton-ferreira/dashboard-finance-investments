@@ -4,6 +4,8 @@ import { Navigate } from 'react-router'
 
 import Header from '@/components/header'
 import DataSelection from '@/components/date-selection'
+import Balance from '@/components/balance'
+
 import { Button } from '@/components/ui/button'
 import { PlusIcon } from 'lucide-react'
 
@@ -28,6 +30,7 @@ const HomePage = () => {
           </Button>
         </div>
       </div>
+      <Balance />
     </>
   )
 }
